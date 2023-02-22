@@ -4,19 +4,20 @@ import { BaseRepository } from '../../../base/repositories/base.repository';
 import { AccountTypeRepositoryInterface } from '.';
 import { AccountTypeEntity } from '../entity';
 
-
-
 @Injectable()
 export class AccountTypeRepository
     extends BaseRepository<AccountTypeEntity>
     implements AccountTypeRepositoryInterface {
+
+      
+
   static getInstance(): AccountTypeRepository {
     throw new Error('Method not implemented.');
   }
 
   register(entity: AccountTypeEntity):AccountTypeEntity  {
     const indexCurrentEntity = this.database.findIndex(
-      (item) => item.id === entity.id );
+      (item) => item.id === entity.id || item.name.toUpperCase() == entity.name.toUpperCase());
 
     if (indexCurrentEntity != -1) throw new NotFoundException(`Id : ${entity.id} (accountType) ya existe`);
 

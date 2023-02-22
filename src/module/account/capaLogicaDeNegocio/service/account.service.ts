@@ -10,14 +10,16 @@ import { CustomerRepository } from '../../../customer/capaDeDato/repository/cust
 import { PaginationModel } from 'src/module/base/models';
 import { ChangeAccountTypeDTO } from '../dto/changeAccountType.dto';
 
+
 @Injectable()
 export class AccountService {
 
   constructor(
     private readonly accountRepository: AccountRepository, 
     private readonly accountTypeRepository: AccountTypeRepository,
-    private readonly customerRepository: CustomerRepository,) {}
-
+    private readonly customerRepository: CustomerRepository,) {
+      this.Fijos();//Esta funcion me construye datos fijos
+    }
   createAccount(account: CreateAccountdto): AccountEntity {
     const customer = this.customerRepository.findOneById(account.customer);
     //estoy buscando un accountType que no existe en la base de datos porque nunca lo creo
@@ -167,6 +169,70 @@ export class AccountService {
   getCustomer(accountId: string): CustomerEntity {
     return this.accountRepository.findOneById(accountId).coustomer_id; 
   }
+
+
+
+
+//Datos fijos de account type
+   accountType1 : AccountTypeEntity = {
+    id : '1',
+    name: 'Caja de Ahorro en Pesos ($)',
+    state : true,
+  }
+  
+   accountType2 : AccountTypeEntity = {
+    id : '2',
+    name: 'Caja de Ahorro en Dolares (US$)',
+    state : true,
+  }
+  
+   accountType3 : AccountTypeEntity = {
+    id : '3',
+    name: 'Caja corriente en Pesos ($)',
+    state : true,
+  }
+  
+   accountType4 : AccountTypeEntity = {
+    id : '4',
+    name: 'Caja Corriente en Dolares (US$)',
+    state : true,
+  }
+  //Datos fijos de Account 
+  account1 : AccountEntity = {
+    id : "1",
+    coustomer_id: {
+        id:"1",
+        documentType: {
+          id : "1",
+          name: "Cedula",
+          state: true
+        },
+        document: "12345678",
+        fullName: "Cristian Castro",
+        email: "cris@gmail.com",
+        phone: "09212324",
+        password: "cris12344",
+        avatarUrl: undefined,
+        state : true,
+        daletedAt: undefined, 
+    },
+    account_type_id: this.accountType1,
+    balance: 0,
+    state: true,
+    delete_at : undefined,
+  }
+
+
+  //Metodo para los type de cuentas que queden fijos 
+  Fijos(){
+    this.accountTypeRepository.register(this.accountType1);
+    this.accountTypeRepository.register(this.accountType2);
+    this.accountTypeRepository.register(this.accountType3);
+    this.accountTypeRepository.register(this.accountType4);
+    this.accountRepository.register(this.account1);
+  }
+
+
 
   
 

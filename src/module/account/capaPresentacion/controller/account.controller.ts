@@ -9,6 +9,7 @@ import { CustomerEntity } from 'src/module/customer/capaDeDato/entity';
 import { ChangeAccountTypeDTO } from '../../capaLogicaDeNegocio/dto/changeAccountType.dto';
 // import { ObservableHandel } from 'src/obs/observableHandler';
 
+
 @Controller('account')
 export class AccountController {//extends ObservableHandel
     constructor(private readonly accountService : AccountService){
@@ -17,7 +18,7 @@ export class AccountController {//extends ObservableHandel
     
    // private logger = new Logger(`AccountController`);
 
-    //Modo prueba ya que no anda SigUp para crear una cuenta
+
     @Post(`/create`)//HECHO
     createAccount(@Body() newAccount : CreateAccountdto):AccountEntity{
         const newAccountType = this.accountService.createAccount(newAccount);
@@ -37,12 +38,12 @@ export class AccountController {//extends ObservableHandel
         return newAccountType;
     }
     
-    @Get('/customer/:customerId')//Me retorna todas las cuentas o un rango de cuentas del cliente
+    @Get('/account/:accountId')//Me retorna todas las cuentas o un rango de cuentas del cliente
     findByCustomer(@Body() pagination: PaginationModel, @Param('customerId') customerId: string): AccountEntity[] {
         return this.accountService.findByCustomer(customerId);
     }
 
-    @Get('/customer/:accountId')
+    @Get('/customer/:customerId')
     getCustomer(@Param('accountId') accountId: string): CustomerEntity {
         return this.accountService.getCustomer(accountId);
     }

@@ -10,6 +10,7 @@ export class AccountEntity implements AccountModel{
     coustomer_id: CustomerEntity;
     account_type_id: AccountTypeEntity;
     balance: number = 0;
-    state: boolean;
-    delete_at: Date;
+    state: boolean ;
+    delete_at: Date | undefined;
 }
+ 

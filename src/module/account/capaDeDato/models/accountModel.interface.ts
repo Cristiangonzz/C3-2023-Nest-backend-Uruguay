@@ -12,5 +12,5 @@ export interface AccountModel {
         account_type_id: AccountTypeEntity;
         balance: number;
         state: boolean;
-        delete_at: Date;
+        delete_at: Date | undefined;
 }

@@ -68,14 +68,14 @@ export class SegurityService {
       const account = this.accountService.createAccount(newAccount);
 
       if (!account) throw new InternalServerErrorException();
-      return jwt.sign(user,process.env.TOKEN || 'tokenRegistro');
+      return jwt.sign(user,process.env.TOKEN || 'tokenEntrada');
 
     }else throw new InternalServerErrorException(`Error al registrase`);
   }
 
   signOut(JWToken: string): void {
     if(!jwt.verify(
-      JWToken, process.env.TOKEN || 'tokenRegistro')
+      JWToken, process.env.TOKEN || 'tokenEntrada')
       ) throw new Error('JWT No Valido');
   }
 }

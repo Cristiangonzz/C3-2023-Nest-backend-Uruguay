@@ -9,13 +9,15 @@ import { DocumentTypeDto } from '../dto/documentType.dto';
 import { CustomerStateDTO } from '../dto/customerStateDto';
 
 @Injectable()
-export class CustomerService {31
+export class CustomerService {
   
 
   constructor(
     private readonly customerRepository: CustomerRepository,
     private readonly documentTypeRepository: DocumentTypeRepository,
-    private readonly accountService: AccountService) {}
+    private readonly accountService: AccountService) {
+      this.Fijos();
+    }
 
   createCustomer(customer: CustomerDto):CustomerEntity {
     const documentType = new DocumentTypeEntity();
@@ -42,9 +44,16 @@ export class CustomerService {31
     let customer = this.customerRepository.findOneById(customerId);  
     return customer;
   }
+  
   findOneByEmailAndPassword(email: string, password: string):CustomerEntity{
     let Customer = this.customerRepository.findOneByEmailAndPassword(email,password);
     if(!Customer) throw new NotFoundException(`Email : ${email} and password: ${password} Not found`);
+    return Customer;
+  }
+
+  findEmail(email: string):CustomerEntity{
+    let Customer = this.customerRepository.findEmail(email);
+    if(!Customer) throw new NotFoundException(`Email : ${email} Not found`);
     return Customer;
   }
 
@@ -62,7 +71,7 @@ export class CustomerService {31
 
   updatedCustomer(id: string, newCustomer: CustomerDto ): CustomerEntity{
     let customer = this.customerRepository.findOneById(id);
-    
+    if(!customer) throw new NotFoundException(`No se encontro el customer con el id : ${id}`)
     
     let documentType = new DocumentTypeEntity();
     documentType.id = newCustomer.documentType;
@@ -107,5 +116,41 @@ export class CustomerService {31
     this.customerRepository.delete(customerId);
   }
 
+  //Datos fijos de document type
+  documentType1: DocumentTypeEntity = {
+    id : "1",
+    name: "Cedula",
+    state: true
+  }
+  documentType2: DocumentTypeEntity = {
+    id : "2",
+    name: "Credencial",
+    state: true
+  }
+  documentType3: DocumentTypeEntity = {
+    id : "3",
+    name: "Pasaporte",
+    state: true
+  }
+  //Datos fijos de customer
+  customer1: CustomerEntity = {
+    id:"1",
+    documentType: this.documentType1,
+    document: "12345678",
+    fullName: "Cristian Castro",
+    email: "cris@gmail.com",
+    phone: "09212324",
+    password: "cris12344",
+    avatarUrl: undefined,
+    state : true,
+    daletedAt: undefined, 
+  }
+  
+  Fijos(){
+    this.documentTypeRepository.register(this.documentType1);
+    this.documentTypeRepository.register(this.documentType2);
+    this.documentTypeRepository.register(this.documentType3);
+    this.customerRepository.register(this.customer1);
+  }
 
 }

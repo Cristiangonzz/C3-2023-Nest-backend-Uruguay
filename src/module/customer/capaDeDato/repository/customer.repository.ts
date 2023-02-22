@@ -33,14 +33,15 @@ export class CustomerRepository
     let indexCurrentEntity = this.database.findIndex(
       (item) => item.id === id && typeof item.daletedAt === 'undefined');
 
-    if (indexCurrentEntity != -1)
-      this.database[indexCurrentEntity] = {
+    if (indexCurrentEntity == -1) throw new NotFoundException(`Id : ${id} not found base of Date`);
+      
+    this.database[indexCurrentEntity] = {
         ...this.database[indexCurrentEntity],
         ...entity,
         id,
       } as CustomerEntity;
-    else throw new NotFoundException(`Id : ${id} not found base of Date`);
     return this.database[indexCurrentEntity];
+    
   }
   
 //-----------------------------------------------------------------------------------------------------
@@ -93,6 +94,19 @@ export class CustomerRepository
     if(indexCurrentEntity === -1) throw new NotFoundException(`Email : ${email} and password: ${password} Not found`);
     return this.database[indexCurrentEntity];
   }
+
+//-----------------------------------------------------------------------------------------------------
+
+
+findEmail(email: string): CustomerEntity {
+  const indexCurrentEntity = this.database.findIndex(
+    (item) =>
+      item.email === email &&
+      typeof item.daletedAt === 'undefined'
+  );
+  if(indexCurrentEntity === -1) throw new NotFoundException(`Email : ${email}  Not found`);
+  return this.database[indexCurrentEntity];
+}
 
 //-----------------------------------------------------------------------------------------------------
 

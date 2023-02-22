@@ -18,17 +18,16 @@ export class CustomerController {
 
     @Put(`/update/:id`) //HECHO
     updatedCustomer(@Param(`id`) id : string,
-    @Body() newCustomer : CustomerDto)
-    :CustomerEntity{
+    @Body() newCustomer : CustomerDto):CustomerEntity{
         return this.customerService.updatedCustomer(id,newCustomer);
     }
 
-    @Get(`/getInfo/:id`) // HECHO
+    @Get(`/getInfo/:id`) //HECHO
     getCustomerInfo(@Param(`id`) customerId: string): CustomerEntity {
         return this.customerService.getCustomerInfo(customerId);
     }
 
-    @Post(`/document-type/create`)//Hecho
+    @Post(`/document-type/create`) //HECHO
     createDocumentType(@Body()documentType : DocumentTypeDto):DocumentTypeEntity{
         return this.customerService.createDocumentType(documentType);
     }
@@ -52,11 +51,16 @@ export class CustomerController {
         return this.customerService.findOneByEmailAndPassword(email,password);   
     }
 
+    @Get(`/credecialesEmail/:email`)
+    findEmail(@Param("email")email: string):CustomerEntity{
+        return this.customerService.findEmail(email);   
+    }
 
     @Delete('/soft-delete/:id')
     unsuscribe(@Param('id') id: string): void {
         this.customerService.deleteCustomer(id);
     }
+
     @Delete('/hard-delete/:id')
     hardDelete(@Param('id') id: string): void {
         this.customerService.deleteCustomer(id);
